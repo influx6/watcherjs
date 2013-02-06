@@ -40,14 +40,15 @@ module.exports = (function Watcher(ts){
       return true;
   };
 
-  app.watch = function Watch(name,file,fn){
+  app.watch = function Watch(name,pfile,fn){
+    var file = path.resolve(pfile);
     if(!fs.existsSync(file)) return;
 
     var self = this,
         stat = fs.statSync(file), 
         key = keyGen(stat.size,stat.mtime);
 
-    helper.add.call(this.watchables,name,{ key: key, root: path.normalize(file),fn:fn });
+    return helper.add.call(this.watchables,name,{ key: key, root: path.normalize(file),fn:fn });
   };
 
   app.bootup = function Bootup(){
@@ -58,5 +59,13 @@ module.exports = (function Watcher(ts){
     this.up = false;
     return true;
   };
+
+  app.stop = function ShutDown(){
+    this.watching = false;
+    this.up = false;
+    return true;
+  };
+
+  return app;
 
 })(require('ts').ToolStack);
