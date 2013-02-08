@@ -1,0 +1,22 @@
+{
+  "name": "watcherjs",
+  "version": "0.0.1",
+  "description": "a simple file or directory watcher with a callback action",
+  "main": "watcher.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/influx6/watcherjs"
+  },
+  "keywords": [
+    "file",
+    "watcher",
+    "directory",
+    "watcher"
+  ],
+  "author": "Alexander Adeniyi Ewetumo",
+  "license": "Mit",
+  "gitHead": "a512bece82529c56dd4e043b0d4e083c651b4411"
+}

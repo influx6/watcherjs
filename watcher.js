@@ -26,9 +26,10 @@ module.exports = (function Watcher(ts){
       this.clock =  util.delay(function(){
 
         util.eachAsync(self.watchables,function(e,i,o,fn){
+          if(!fs.existsSync(e.root)) return;
             var localstat = fs.statSync(e.root),
             key = keyGen(localstat.size,localstat.mtime);
-            if(e.key !== key){ e.fn(); e.key = key; }
+            if(e.key !== key){ e.fn.call(e); e.key = key; }
             fn(false);
         },function(err){
            if(err) return false;
@@ -42,13 +43,13 @@ module.exports = (function Watcher(ts){
 
   app.watch = function Watch(name,pfile,fn){
     var file = path.resolve(pfile);
-    if(!fs.existsSync(file)) return;
+    if(!fs.existsSync(file)) throw new Error(file+" does not exists!");
 
     var self = this,
         stat = fs.statSync(file), 
         key = keyGen(stat.size,stat.mtime);
 
-    return helper.add.call(this.watchables,name,{ key: key, root: path.normalize(file),fn:fn });
+    return helper.add.call(this.watchables,name,{ route:name,key: key, root: path.normalize(file),fn:fn });
   };
 
   app.bootup = function Bootup(){
