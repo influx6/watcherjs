@@ -16,6 +16,9 @@
     "directory",
     "watcher"
   ],
+  "dependencies":{
+    "tsk":"0.3.x"
+  },
   "author": "Alexander Adeniyi Ewetumo",
   "license": "Mit",
   "gitHead": "a512bece82529c56dd4e043b0d4e083c651b4411"
