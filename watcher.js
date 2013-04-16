@@ -28,8 +28,8 @@ module.exports = (function Watcher(ts){
         util.eachAsync(self.watchables,function(e,i,o,fn){
           if(!fs.existsSync(e.root)){ delete o[i]; return fn(false); };
             var localstat = fs.statSync(e.root),
-            key = keyGen(localstat.size,localstat.mtime);
-            // key = localstat.mtime;
+            // key = keyGen(localstat.size,localstat.mtime);
+            key = localstat.mtime.getTime();
             if(e.key !== key){ e.fn.call(e,i); e.key = key; }
             fn(false);
         },function(err){
@@ -48,8 +48,8 @@ module.exports = (function Watcher(ts){
 
     var self = this,
         stat = fs.statSync(file), 
-        key = keyGen(stat.size,stat.mtime);
-        // key = stat.mtime;
+        // key = keyGen(stat.size,stat.mtime);
+        key = stat.mtime.getTime();
 
     return helper.add.call(this.watchables,name,{ route:name,key: key, root: path.normalize(file),fn:fn });
   };
@@ -59,11 +59,10 @@ module.exports = (function Watcher(ts){
   };
 
   app.bootup = function Bootup(){
-    if(this.rebooting) return;
-
+    this.rebooting = false;
     this.watching = true;
     this.cycle(this.ms);
-    this.up = false;
+    this.up = true;
     return true;
   };
 
@@ -73,6 +72,14 @@ module.exports = (function Watcher(ts){
     return true;
   };
 
+  app.clone = function(){
+    return util.clone(this);
+  };
+
+  app.boot = function(){ this.bootup(); }
+  app.shutDown = function(){ this.stop(); }
+  app.reboot = function(){ this.rebooting = true; this.stop(); this.bootup(); }
+
   return app;
 
-})(require('ts').ToolStack);
+})(require('tsk').ToolStack);
