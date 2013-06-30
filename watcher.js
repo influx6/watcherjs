@@ -1,5 +1,5 @@
 module.exports = (function Watcher(ts){
-  var ts = require('ts').ToolStack,
+  var ts = require('tsk').ToolStack,
   util = ts.Utility, 
   path = require('path'), 
   fs = require('fs'),
